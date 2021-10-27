@@ -7,11 +7,7 @@
 
 locals {
   subscriptions = {
-    Infra-Opscore-DevTest       = "02b47050-0fc9-43cd-9017-1b250288af03",
-    Infra-Opscore-Production    = "7e01a526-af7b-4ab3-9aaf-e9e541a7c684",
-    Kubernetes-DevTest          = "081b69e2-3141-4fad-af19-9f20d42201ab",
-    Velocity-Connect-DevTest    = "8fa861fe-6a38-4b52-bc30-4df1ac4a70b5",
-    Velocity-Connect-Production = "1d834cda-73f2-4065-b96d-187dacbc2dd9"
+   subscribtion_name = "subscription"
   }
 
   default_subscription = {
