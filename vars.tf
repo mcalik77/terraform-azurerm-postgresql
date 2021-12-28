@@ -40,7 +40,7 @@ variable ssl_enforcement_enabled {
 
 variable administrator_login {
     type    = string
-    default = "adminbcbsaz"
+  
 }
 
 variable administrator_login_password {
@@ -72,21 +72,6 @@ validation {
 }
 }
 
-# Below is a sample whitelisting a subnet from default subscription and a subnet from different subscription (Kubernetes-DevTest)
-# subnet_whitelist = [
-#   {
-#     virtual_network_resource_group_name = "spokeVnetRg"
-#     virtual_network_name                = "vnetVelConD01"
-#     virtual_network_subnet_name         = "vnD01sn003"
-#   },
-#   {
-#     virtual_network_resource_group_name = "spokeVnetRg"
-#     virtual_network_name                = "vnetAKSinfraTestD01"
-#     virtual_network_subnet_name         = "sbntAKSinfraTest01"
-#     subscription                        = "Kubernetes-DevTest" 
-#   }
-
-# ]
 
 variable ssl_minimal_tls_version_enforced {
     type    = string
@@ -100,11 +85,7 @@ variable "database_attributes" {
    collation = string
   }
 ))
- default = [{
-   name          = "bcbsaz_postgress"
-   charset       = "UTF8"
-   collation     = "English_United States.1252"
-  }]
+
 
 }   
 
