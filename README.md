@@ -49,95 +49,26 @@ module "postgresql" {
   
 }
 ```
-You can specify the values of the variables through a **tfvars** file or from
-the command line. If needed you can even do a combination of the two by
-specifying the **-var** and **-var-file** command line arguments.
-
-## dev.tfvars
-
-```
-info = {
-  domain      = "Projecy"
-  subdomain   = "Matrix"
-  environment = "Dev"
-  sequence    = "005"
-}
-
-tags = {
-  environment = "Dev"
-  source      = "Terraform"
-}
-
-# Whitelisting a subnet from default subscription and a subnet from different subscription (Infra-Opscore-DevTest)
-# In order to create Firewall Rules and VNET rules, public_network_access_enabled must be true. Otherwise only private endpoint connections will be allowed to access this resource.
-
-
-subnet_whitelist = [
-  {
-    virtual_network_resource_group_name = "spokeVnetRg"
-    virtual_network_name                = "vnetVelConD01"
-    virtual_network_subnet_name         = "vnD01sn003"
-  },
-  {
-    virtual_network_resource_group_name = "spokeVnetRg"
-    virtual_network_name                = "vnetOpsCoreD01"
-    virtual_network_subnet_name         = "vnD01sn001"
-    subscription                        = "Infra-Opscore-DevTest" 
-  }
-
-]
-
-location              = "southcentralus"
-sku_name              = "GP_Gen5_2"
-storage_mb            = 5120
-backup_retention_days = 7
-server_version        = "11"
-
-administrator_login_password = "DevOps1234"
-
-private_endpoint_subnet = {
-     virtual_network_name                = "vnetVelConD01"           
-     virtual_network_subnet_name         = "privateLink01"
-     virtual_network_resource_group_name = "spokeVnetRg"
-   }
-database_attributes = [
-  {
-   name          = "bcbsaz-postgress"
-   charset       = "UTF8"
-   collation     = "English_United States.1252"
-  },
-  {
-   name          = "bcbsaz-postgress2"
-   charset       = "UTF8"
-   collation     = "English_United States.1252"
-  }
-]
-
-ip_whitelist  = ["204.153.155.151", "204.153.155.152"]
-ad_login      = "aclpgadmin"
-
-```
-
 ## Inputs
 
 The following are the supported inputs for the module.
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| info | Info object used to construct naming convention for all resources. | `object` | n/a | yes |
-| tags | Tags object used to tag resources. | `object` | n/a | yes |
-| resource_group | Name of the resource group where the postgresql will be deployed. | `string` | n/a | yes |
-| database_attributes | Attributes  of posgresql database. | `list of object` | '{name = "bcbsaz-postgress" charset = "UTF8" collation = "English_United States.1252"}' | yes |
-| sku_name | Specifies the SKU Name for this PostgreSQL Server. The name of the SKU, follows the tier + family + cores pattern (e.g. B_Gen4_1, GP_Gen5_8). For more information see the product documentation. | `string` | n/a | yes |
-| location | Location of posgresql server and database. | `string` | n/a | yes |
-| administrator_login |  The Administrator Login for the PostgreSQL Server. Required when create_mode is Default. Changing this forces a new resource to be created. | `string` |"adminbcbsaz" | no |
-| administrator_login_password |  The Password associated with the administrator_login for the PostgreSQL Server. Required when create_mode is Default. | `string` | n/a | no |
-| ad_login | The login name of the principal to set as the server administrator| `string` | n/a | required for ad integration |
-| storage_mb | Max storage allowed for a server. Possible values are between 5120 MB(5GB) and 1048576 MB(1TB) for the Basic SKU and between 5120 MB(5GB) and 16777216 MB(16TB) for General Purpose/Memory Optimized SKUs. For more information see the product documentation.| `number` | n/a | no |
-| backup_retention_days | Backup retention days for the server, supported values are between 7 and 35 days   | `number` | n/a | no |
-| public_network_access_enabled | Whether or not public network access is allowed for this server | `bool` | `true` | no |
-| server_version | Specifies the version of PostgreSQL to use. Valid values are 9.5, 9.6, 10, 10.0, and 11. Changing this forces a new resource to be created. | `number` | n/a | yes |
-| ip_whitelist | List of  IP Addresses associated with this Firewall Rule. Changing this forces a new resource to be created. | `List(string)` | n/a | yes |
-| subnet_whitelist | List of objects that contains information to look up a subnet. This is a whitelist of subnets to allow for the postgresql server. | `list(object)` | `[]` | no |
-| private_endpoint_subnet | List of objects of the subnet information that private endpoint will be created.  | `list of object` | [] | yes, if private_endpoint_enabled |
-| private_endpoint_enabled | Enable the private endpoint integration  | `bool` | `true` | no |
+| Name                          | Description                                                                                                                                                                                                                                                    | Type             | Default                                                                                 |             Required             |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | --------------------------------------------------------------------------------------- | :------------------------------: |
+| info                          | Info object used to construct naming convention for all resources.                                                                                                                                                                                             | `object`         | n/a                                                                                     |               yes                |
+| tags                          | Tags object used to tag resources.                                                                                                                                                                                                                             | `object`         | n/a                                                                                     |               yes                |
+| resource_group                | Name of the resource group where the postgresql will be deployed.                                                                                                                                                                                              | `string`         | n/a                                                                                     |               yes                |
+| database_attributes           | Attributes  of posgresql database.                                                                                                                                                                                                                             | `list of object` | '{name = "bcbsaz-postgress" charset = "UTF8" collation = "English_United States.1252"}' |               yes                |
+| sku_name                      | Specifies the SKU Name for this PostgreSQL Server. The name of the SKU, follows the tier + family + cores pattern (e.g. B_Gen4_1, GP_Gen5_8). For more information see the product documentation.                                                              | `string`         | n/a                                                                                     |               yes                |
+| location                      | Location of posgresql server and database.                                                                                                                                                                                                                     | `string`         | n/a                                                                                     |               yes                |
+| administrator_login           | The Administrator Login for the PostgreSQL Server. Required when create_mode is Default. Changing this forces a new resource to be created.                                                                                                                    | `string`         |                                                                                         |                no                |
+| administrator_login_password  | The Password associated with the administrator_login for the PostgreSQL Server. Required when create_mode is Default.                                                                                                                                          | `string`         | n/a                                                                                     |                no                |
+| ad_login                      | The login name of the principal to set as the server administrator                                                                                                                                                                                             | `string`         | n/a                                                                                     |   required for ad integration    |
+| storage_mb                    | Max storage allowed for a server. Possible values are between 5120 MB(5GB) and 1048576 MB(1TB) for the Basic SKU and between 5120 MB(5GB) and 16777216 MB(16TB) for General Purpose/Memory Optimized SKUs. For more information see the product documentation. | `number`         | n/a                                                                                     |                no                |
+| backup_retention_days         | Backup retention days for the server, supported values are between 7 and 35 days                                                                                                                                                                               | `number`         | n/a                                                                                     |                no                |
+| public_network_access_enabled | Whether or not public network access is allowed for this server                                                                                                                                                                                                | `bool`           | `true`                                                                                  |                no                |
+| server_version                | Specifies the version of PostgreSQL to use. Valid values are 9.5, 9.6, 10, 10.0, and 11. Changing this forces a new resource to be created.                                                                                                                    | `number`         | n/a                                                                                     |               yes                |
+| ip_whitelist                  | List of  IP Addresses associated with this Firewall Rule. Changing this forces a new resource to be created.                                                                                                                                                   | `List(string)`   | n/a                                                                                     |               yes                |
+| subnet_whitelist              | List of objects that contains information to look up a subnet. This is a whitelist of subnets to allow for the postgresql server.                                                                                                                              | `list(object)`   | `[]`                                                                                    |                no                |
+| private_endpoint_subnet       | List of objects of the subnet information that private endpoint will be created.                                                                                                                                                                               | `list of object` | []                                                                                      | yes, if private_endpoint_enabled |
+| private_endpoint_enabled      | Enable the private endpoint integration                                                                                                                                                                                                                        | `bool`           | `true`                                                                                  |                no                |
